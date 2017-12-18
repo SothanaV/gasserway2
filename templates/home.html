@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>HOME</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='raphael-min.js') }}"></script>
+  <script src="{{ url_for('static', filename='jquery-1.8.2.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='socket.io-1.2.0.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='syntax.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='epoch.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+
+	<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='d3.js') }}"></script>
+	<script src="{{ url_for('static', filename='epoch.js') }}"></script>
+	<script src="{{ url_for('static', filename='data.js') }}"></script>
+	<script src="{{ url_for('static', filename='ZeroClipboard.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='moment.js') }}"></script>
+	<script src="{{ url_for('static', filename='socket.io-1.2.0.js') }}"></script>
+</head>
+
+<body style="background-color: lightblue"> 
+
+	<div class="jumbotron text-center">
+  		<div style="color:blue"><h1>Sensor Gas</h1></div>
+
+  	</div>
+
+	<div id="gas1" class="col-sm-4" >
+		
+				<h2 style="text-align:center;" >GasSensor 1
+					<a id="gas_1" style="color: black"></a>
+		<div id="real-time-linegas1" class="epoch" style="height: 150px; position: relative;" data-epoch-container-id="epoch-container-6"> </div>
+	</div>
+	<div id="gas2" class="col-sm-4">
+		
+				<h2 style="text-align:center;">GasSensor 2
+					<a id="gas_2" style="color: black"></a>
+		<div id="real-time-linegas2" class="epoch" style="height: 150px; position: relative;" data-epoch-container-id="epoch-container-6"> </div>
+	</div>
+	<div id="gas3" class="col-sm-4">
+		
+
+				<h2 style="text-align:center;">GasSensor 3
+					<a id="gas_3" style="color: black"></a>
+		<div id="real-time-linegas3" class="epoch" style="height: 150px; position: relative;" data-epoch-container-id="epoch-container-6"> </div>
+	</div>
+		
+	<div id="AvGas" class="col-sm-12">
+		<h1 style="text-align:center;">Average 
+			
+					<a id="gas_av" style="text-align:center;color: black"></a>
+		<div id="real-time-linegasAV" class="epoch" style="height: 150px; position: relative;" data-epoch-container-id="epoch-container-6"> </div>
+	</div>
+
+</body>
+
+<script type="text/javascript">
+	var socket = io();
+	socket.on('s2c_1', function(showgas1)
+    {
+    document.getElementById("gas_1").innerHTML=showgas1+" ppm";
+    gas1=parseFloat(showgas1);
+    	if (showgas1 >1000)
+    	{
+    		document.getElementById("gas1").style.backgroundColor = "red";		
+    	}
+    	if (showgas1 <=1000)
+    	{
+    		document.getElementById("gas1").style.backgroundColor = "white";
+    	}
+    });
+    socket.on('s2c_2', function(showgas2)
+    {
+    document.getElementById("gas_2").innerHTML=showgas2+" ppm";
+    gas2=parseFloat(showgas2);
+    	if (showgas2 >1000)
+    	{
+    		document.getElementById("gas2").style.backgroundColor = "red";		
+    	}
+    	if (showgas2 <=1000)
+    	{
+    		document.getElementById("gas2").style.backgroundColor = "white";
+    	}
+    });
+    socket.on('s2c_3', function(showgas3)
+    {
+    document.getElementById("gas_3").innerHTML=showgas3+" ppm";
+    gas3=parseFloat(showgas3);
+    	if (showgas3 >1000)
+    	{
+    		document.getElementById("gas3").style.backgroundColor = "red";		
+    	}
+    	if (showgas3 <=1000)
+    	{
+    		document.getElementById("gas3").style.backgroundColor = "white";
+    	}
+    });
+    
+    var gas1=0;
+    var gas2=0;
+    var gas3=0;
+    
+		$(function() {
+		    var data = new RealTimeData(1);
+		    var chart = $('#real-time-linegas1').epoch({
+		        type: 'time.line',
+		        data: data.history(),
+		        axes: ['left', 'bottom', 'right']
+		    });
+
+		    setInterval(function() { 
+		    	unow=moment().unix();
+		    	d=data.next();
+		    	d[0].time=unow;
+		    	d[0].y=gas1;
+		    	chart.push(d);
+				console.log(unow);
+		    	console.log(JSON.stringify(d));
+		    }, 1000);
+		    chart.push(data.next());
+		});
+
+
+		$(function() {
+		    var data = new RealTimeData(1);
+		    var chart = $('#real-time-linegas2').epoch({
+		        type: 'time.line',
+		        data: data.history(),
+		        axes: ['left', 'bottom', 'right']
+		    });
+
+		    setInterval(function() { 
+		    	unow=moment().unix();
+		    	d=data.next();
+		    	d[0].time=unow;
+		    	d[0].y=gas2;
+		    	chart.push(d);
+				console.log(unow);
+		    	console.log(JSON.stringify(d));
+		    }, 1000);
+		    chart.push(data.next());
+		});
+
+
+		$(function() {
+		    var data = new RealTimeData(1);
+		    var chart = $('#real-time-linegas3').epoch({
+		        type: 'time.line',
+		        data: data.history(),
+		        axes: ['left', 'bottom', 'right']
+		    });
+
+		    setInterval(function() { 
+		    	unow=moment().unix();
+		    	d=data.next();
+		    	d[0].time=unow;
+		    	d[0].y=gas3;
+		    	chart.push(d);
+				console.log(unow);
+		    	console.log(JSON.stringify(d));
+		    }, 1000);
+		    chart.push(data.next());
+		});
+
+		$(function() {
+		    var data = new RealTimeData(1);
+		    var chart = $('#real-time-linegasAV').epoch({
+		        type: 'time.line',
+		        data: data.history(),
+		        axes: ['left', 'bottom', 'right']
+		    });
+
+		    setInterval(function() { 
+		    	unow=moment().unix();
+		    	d=data.next();
+		    	d[0].time=unow;
+		    	d[0].y=(gas1+gas2+gas3)/3;
+		    	chart.push(d);
+				console.log(unow);
+		    	console.log(JSON.stringify(d));
+		    	document.getElementById("gas_av").innerHTML=(gas1+gas2+gas3)/3+" ppm";
+		    	if ((gas1+gas2+gas3)/3 >1000)
+    		{
+    			document.getElementById("AvGas").style.backgroundColor = "red";		
+    		}
+    		if ((gas1+gas2+gas3)/3 <1000)
+    		{
+    			document.getElementById("AvGas").style.backgroundColor = "white";
+    		}
+		    }, 1000);
+		    chart.push(data.next());
+		    
+		});
+
+		
+		
+</script>
