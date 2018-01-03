@@ -14,7 +14,7 @@ command3 = "S"
 
 @login_required
 def home(request):
-	return redirect('http://localhost:5001/home')
+	return redirect('http://128.199.198.154:5001/home')
 
 def control(request):
 	return render(request,'control.html')
@@ -38,3 +38,8 @@ def getdata3(request):
 @login_required
 def graph(request):
 	return render(request, 'first.html')
+
+@login_required
+def home2(request):
+	#return render(request, 'home2.html')
+	return render(request, 'first2.html')
