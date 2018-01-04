@@ -5,9 +5,9 @@
 #define USE_SERIAL Serial
 const char* ssid     = "iot";            //Set ssid
 const char* password = "12345678";                    //Set Password
-const char* Server   = "192.168.137.1";           //set Server Domain or Server ip
+const char* Server   = "128.199.198.154";           //set Server Domain or Server ip
 const char* port1     = "5001";
-const char* port2     = "8000";
+const char* port2     = "9999";
 const char* nodeid   = "2";
 ESP8266WiFiMulti WiFiMulti;
 
@@ -22,9 +22,9 @@ float ratio; // Get ratio RS_GAS/RS_air
 #define L2  D6 
 #define L1  D7 
 #define R2  D8
-//#define LINE_TOKEN "I6huv02d52dcoBxghxVGqSaZRvOE7J03MWpGfNTt0R4" // node1
-#define LINE_TOKEN "BOBjINXNEX6tPjtDyb5Cc8WEtLKiylr1vPKQMssSTXN" // node2
-//#define LINE_TOKEN "Y0p3QRM7SoVmFkjf97bu70ZY2TPGtYBkwNz64aVOMfV" // node3
+#define LINE_TOKEN "Lttwf9asid98zwb2Td0K74CKvRgGnr0CqI1hBbf41hF" // node1
+#define LINE_TOKEN "jzim5rSKqoKkKYuAnsHankJh746pFVgGsM7HtLWhoSh" // node2
+#define LINE_TOKEN "zoq7KYTrikbefz3F2mq5h9m8TF4UwsHCuHTcOKimOIw" // node3
 String message = "%E0%B9%81%E0%B8%81%E0%B9%8A%E0%B8%AA%E0%B9%80%E0%B8%81%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%88%E0%B8%B2%E0%B8%A1%E0%B8%B2%E0%B8%95%E0%B8%A3%E0%B8%90%E0%B8%B2%E0%B8%99"; 
 
 int buzzer = D3;
